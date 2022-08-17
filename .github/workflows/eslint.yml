@@ -3,13 +3,24 @@ name: Lint
 on: [push]
 
 jobs:
-  eslint:
+  lint:
     runs-on: ubuntu-latest
+    name: Run eslint
     steps:
       - uses: actions/checkout@v1
-      - uses: stefanoeb/eslint-action@1.0.2
-      - uses: iCrawl/action-eslint@v1
+      - uses: actions/setup-node@v1
         with:
-          reporter: github-check
           node-version: '16.16.0'
-          files: src/
+      - run: yarn
+      - run: yarn lint
+  tsc:
+    runs-on: ubuntu-latest
+    name: Check typescript
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16.16.0'
+      - run: yarn
+      - run: yarn tsc
+
