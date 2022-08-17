@@ -30,7 +30,7 @@ jobs:
   build:
     name: Create Release
     runs-on: ubuntu-latest
-    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
+    if: always()
     needs: [tsc, lint]
     steps:
       - name: Create Release
