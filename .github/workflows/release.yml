@@ -27,6 +27,12 @@ jobs:
       - name: Check tsc
         id: tsc
         run: yarn ts
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - name: Get commits
+        id: commits
+        run: echo ${{ github.repository.compare_url}}
       - name: Tracker
         id: tracker
         run: >-
@@ -34,10 +40,7 @@ jobs:
             -H 'Accept: application/json'
             -H 'Authorization: OAuth ${{secrets.TOKEN }}' 
             -H 'X-Org-ID: ${{ secrets.ORGANISATION_ID }}'
-            -d '{"summary": "Релиз № ${{ github.ref_name }} от $(date +'%Y-%m-%d')", "description" : "Ответственный за релиз ${{ github.actor }} \n Коммиты, попавшие в релиз:"}'
-      - name: Show Response
-        run: |
-          echo ${{ toJson(github.event) }}
+            -d '{"summary": "Релиз № ${{ github.ref_name }} от ${{ steps.date.outputs.date }}", "description" : "Ответственный за релиз ${{ github.actor }} \n Коммиты, попавшие в релиз:"}'
       - name: Create Release
         uses: actions/create-release@v1
         env:
@@ -45,9 +48,5 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
           draft: false
           prerelease: false
