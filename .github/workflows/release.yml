@@ -32,7 +32,7 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Get commits
         id: commits
-        run: echo ${{ github.repository.compare_url}}
+        run: echo ${{ toJson(github.event.repository.compare_url) }}
       - name: Tracker
         id: tracker
         run: >-
