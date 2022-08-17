@@ -32,7 +32,7 @@ jobs:
         run: |
           curl -X PATCH https://api.tracker.yandex.net/v2/issues/INFRA-58
           -H 'Accept: application/json'
-          -H 'Authorization: ${{OAuth secrets.CLIENT_ID }}' 
+          -H 'Authorization: OAuth ${{secrets.CLIENT_ID }}' 
           -H 'X-Org-ID: ${{ secrets.ORGANISATION_ID }}'
           -d '{"summary": "Релиз № ${{ github.ref }} от $(date +'%Y-%m-%d')", "description" : "Ответственный за релиз ${{ github.actor }} \n Коммиты, попавшие в релиз:"}'
       - name: Show Response
