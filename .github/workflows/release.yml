@@ -30,7 +30,6 @@ jobs:
   build:
     name: Create Release
     runs-on: ubuntu-latest
-    if: always()
     needs: [tsc, lint]
     steps:
       - name: Create Release
