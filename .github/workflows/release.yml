@@ -34,11 +34,10 @@ jobs:
           -H 'Accept: application/json'
           -H 'Authorization: OAuth ${{secrets.TOKEN }}' 
           -H 'X-Org-ID: ${{ secrets.ORGANISATION_ID }}'
-          -d '{"summary": "Релиз № ${{ github.ref_name }} от ${{ date +'%Y-%m-%d'}}", "description" : "Ответственный за релиз ${{ github.actor }} \n Коммиты, попавшие в релиз:"}'
+          -d '{"summary": "Релиз № ${{ github.ref_name }} от", "description" : "Ответственный за релиз ${{ github.actor }} \n Коммиты, попавшие в релиз:"}'
       - name: Show Response
         run: |
-          commits=${{ github.event }}
-          echo $commits
+          echo ${{ toJson(github) }}
           echo ${{ steps.tracker.outputs.response }}
           echo ${{ steps.tracker.outputs.headers }}
       - name: Create Release
