@@ -29,12 +29,12 @@ jobs:
         run: yarn ts
       - name: Tracker
         id: tracker
-        run: |
-          curl -X PATCH https://api.tracker.yandex.net/v2/issues/INFRA-58
-          -H 'Accept: application/json'
-          -H 'Authorization: OAuth ${{secrets.TOKEN }}' 
-          -H 'X-Org-ID: ${{ secrets.ORGANISATION_ID }}'
-          -d '{"summary": "Релиз № ${{ github.ref_name }} от", "description" : "Ответственный за релиз ${{ github.actor }} \n Коммиты, попавшие в релиз:"}'
+        run: >-
+            curl -X PATCH https://api.tracker.yandex.net/v2/issues/INFRA-58
+            -H 'Accept: application/json'
+            -H 'Authorization: OAuth ${{secrets.TOKEN }}' 
+            -H 'X-Org-ID: ${{ secrets.ORGANISATION_ID }}'
+            -d '{"summary": "Релиз № ${{ github.ref_name }} от", "description" : "Ответственный за релиз ${{ github.actor }} \n Коммиты, попавшие в релиз:"}'
       - name: Show Response
         run: |
           echo ${{ toJson(github) }}
