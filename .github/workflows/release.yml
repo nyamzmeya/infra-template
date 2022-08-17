@@ -41,6 +41,7 @@ jobs:
              responce=$(curl -H GET https://api.github.com/repos/nyamzmeya/infra-template/compare/${{steps.release.outputs.tag_name}}...${{ github.ref_name }}
              -H "Accept: application/vnd.github+json"  
              -H "Authorization: token ${{ secrets.GIT_API }}")
+             echo "commits=$responce"
       - name: List commits
         run: echo "commits=$responce"
       - name: Tracker
