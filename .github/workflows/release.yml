@@ -42,7 +42,7 @@ jobs:
              -H "Accept: application/vnd.github+json"  
              -H "Authorization: token ${{ secrets.GIT_API }}")
       - name: List commits
-        run: echo "${{ steps.date.outputs.date }}"
+        run: echo "${{ steps.commits.outputs.date }}"
       - name: Tracker
         id: tracker
         run: >-
