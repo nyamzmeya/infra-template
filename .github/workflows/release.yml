@@ -11,17 +11,17 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
-      - name: Check lint and ts
-        id: check
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Check
+        uses: actions/checkout@v1
+      - name: Node
+        uses: actions/setup-node@v1
         with:
           node-version: '16.16.0'
-      - run: yarn
-      - run: yarn lint
-      - run: yarn tsc
+      - name: Check lint and tsc
+        id: lint
+        run: yarn yarn lint yarn tsc
       - name: Create Release
-        if: steps.check.outcome == 'success'
+        if: steps.lint.outcome == 'success'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
