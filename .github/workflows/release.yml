@@ -11,24 +11,17 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
-      - name: Run eslint
-        id: eslint
+      - name: Check lint and ts
+        id: check
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
           node-version: '16.16.0'
       - run: yarn
       - run: yarn lint
-      - name: Check typescript
-        id: ts
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '16.16.0'
-      - run: yarn
       - run: yarn tsc
       - name: Create Release
-        if: steps.eslint.outcome == 'success' && steps.ts.outcome == 'success'
+        if: steps.check.outcome == 'success'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
