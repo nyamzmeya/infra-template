@@ -38,9 +38,10 @@ jobs:
       - name: Get commits
         id: commits
         run: >-
-             curl -H GET https://api.github.com/repos/nyamzmeya/infra-template/compare/:${{steps.release.outputs.tag_name}}...:${{ github.ref_name }}
+             commits=$(curl -H GET https://api.github.com/repos/nyamzmeya/infra-template/compare/${{steps.release.outputs.tag_name}}...${{ github.ref_name }}
              -H "Accept: application/vnd.github+json"  
-             -H "Authorization: token ${{ secrets.GIT_ID }}" 
+             -H "Authorization: token ${{ secrets.GIT_ID }}")
+             echo $commits
       - name: Tracker
         id: tracker
         run: >-
