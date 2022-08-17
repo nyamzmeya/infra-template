@@ -10,4 +10,5 @@ jobs:
       - uses: stefanoeb/eslint-action@1.0.2
       - uses: AntonKornus/TypeScript-Linter@1.0.0
         with:
+          node-version: '16.16.0'
           files: src/
