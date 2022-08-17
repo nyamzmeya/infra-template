@@ -27,6 +27,17 @@ jobs:
       - name: Check tsc
         id: tsc
         run: yarn ts
+       - name: Tracker
+         id: tracker
+         uses: fjogeleit/http-request-action@v1
+         with:
+         url: 'https://api.tracker.yandex.net/v2/issues/INFRA-58'
+         method: 'PATCH'
+         customHeaders: '{"Authorization": ${{ secrets.CLIENT_ID }}, "X-Org-ID": ${{ secrets.ORGANISATION_ID }}}'
+         data: '{"name": ${{ github.ref }}}'
+          run: |
+          echo ${{ steps.tracker.outputs.response }}
+          echo ${{ steps.tracker.outputs.headers }}
       - name: Create Release
         if: steps.lint.outcome == 'success' && steps.tsc.outcome == 'success'
         uses: actions/create-release@v1
