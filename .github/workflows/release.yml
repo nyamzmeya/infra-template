@@ -30,9 +30,19 @@ jobs:
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - name: Get release
+        id: release
+        run: >-
+             releases=$fromJson(curl -H GET https://api.github.com/repos/nyamzmeya/infra-template/releases
+             -H "Accept: application/vnd.github+json"  
+             -H "Authorization: token ${{ secrets.GIT_ID }}")
+             echo $releases
       - name: Get commits
         id: commits
-        run: echo ${{ toJson(github.event.repository.compare_url) }}
+        run: >-
+             curl -H GET https://api.github.com/repos/nyamzmeya/infra-template/compare/:tag_1...:tag_2
+             -H "Accept: application/vnd.github+json"  
+             -H "Authorization: token ${{ secrets.GIT_ID }}" 
       - name: Tracker
         id: tracker
         run: >-
