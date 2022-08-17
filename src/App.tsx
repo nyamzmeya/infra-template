@@ -2,6 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+let a = "a";
+
 function App():number {
   return (
     <div className="App">
