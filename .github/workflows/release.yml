@@ -43,13 +43,17 @@ jobs:
           script: |
              const core = require('@actions/core');
              const axios = require('axios');
+             getCommits = async () => {
              let responce = await axios.get("https://api.github.com/repos/nyamzmeya/infra-template/compare/${{steps.release.outputs.tag_name}}...${{ github.ref_name }}",
-             {headers: {"Authorization" : "token ${{ secrets.GIT_API }}"}});
+             { headers: { "Authorization": "token ${{ secrets.GIT_API }}" } });
              let result = "";
-             responce.commits.forEach(commit => {
-             result += `${commit.sha} ${commit.author.name} ${commit.message}`
+             responce.data.commits
+             .forEach(commit => {
+             result += `${commit.sha} ${commit.commit.author.name} ${commit.commit.message} \n`
              })
-             core.setOutput('result', result)
+             return result;
+             }
+             getCommits.then(result => core.setOutput('result', result))
       - name: List commits
         run: echo ${{ steps.commits.outputs.result}}
       - name: Login to Docker Hub
