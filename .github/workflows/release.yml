@@ -43,7 +43,7 @@ jobs:
           script: |
              const core = require('@actions/core');
              const axios = require('axios');
-             let response = await axios.get("https://api.github.com/repos/nyamzmeya/infra-template/compare/${{steps.release.outputs.tag_name}}...${{ github.ref_name }}",
+             let responce = await axios.get("https://api.github.com/repos/nyamzmeya/infra-template/compare/${{steps.release.outputs.tag_name}}...${{ github.ref_name }}",
              {headers: {"Authorization" : "token ${{ secrets.GIT_API }}"}});
              let result = "";
              responce.commits.forEach(commit => {
