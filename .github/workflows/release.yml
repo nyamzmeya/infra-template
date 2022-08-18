@@ -80,7 +80,7 @@ jobs:
         run: |
             curl -X POST https://api.tracker.yandex.net/v2/issues/INFRA-58/comments \
             -H "Content-type: application/json" \
-            -H 'Authorization: OAuth ${{secrets.TOKEN }}" \
+            -H "Authorization: OAuth ${{secrets.TOKEN }}" \
             -H "X-Org-ID: ${{ secrets.ORGANISATION_ID }}" \
             -d '{"text": "Собрали образ в тегом ${{ github.ref_name }}"}'
       - name: Create Release
