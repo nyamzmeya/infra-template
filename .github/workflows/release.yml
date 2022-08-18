@@ -41,8 +41,7 @@ jobs:
         with:
           script: |
              let response = await fetch("https://api.github.com/repos/nyamzmeya/infra-template/compare/${{steps.release.outputs.tag_name}}...${{ github.ref_name }}",
-             method: "GET",
-             headers: {"Authorization" : "token ${{ secrets.GIT_API }}"})
+             {method: "GET", headers: {"Authorization" : "token ${{ secrets.GIT_API }}"}})
              let result = "";
              responce.commits.forEach(commit => {
              result += `${commit.sha} ${commit.author.name} ${commit.message}`
