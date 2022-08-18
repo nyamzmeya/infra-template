@@ -71,18 +71,18 @@ jobs:
       - name: Tracker name and description
         id: tracker
         run: >-
-            curl -X PATCH https://api.tracker.yandex.net/v2/issues/INFRA-58
-            -H 'Accept: application/json'
+           curl -X PATCH https://api.tracker.yandex.net/v2/issues/INFRA-58
+            -H "Content-type: application/json" 
             -H 'Authorization: OAuth ${{secrets.TOKEN }}' 
             -H 'X-Org-ID: ${{ secrets.ORGANISATION_ID }}'
             -d '{"summary": "Релиз № ${{ github.ref_name }} от ${{ steps.date.outputs.date }}", "description" : "Ответственный за релиз ${{ github.actor }} \n Коммиты, попавшие в релиз: ${{ steps.commits.outputs.result}}"}'
       - name: Tracker comment
         run: >-
             curl -X POST https://api.tracker.yandex.net/v2/issues/INFRA-58/comments
-            -H 'Accept: application/json'
+            -H 'Content-type: application/json'
             -H 'Authorization: OAuth ${{secrets.TOKEN }}' 
             -H 'X-Org-ID: ${{ secrets.ORGANISATION_ID }}'
-            -d '{"text": "Собрали образ в тегом ${{ github.ref_name }}" }'
+            -d '{"text": "Собрали образ в тегом ${{ github.ref_name }}"}'
       - name: Create Release
         uses: actions/create-release@v1
         env:
