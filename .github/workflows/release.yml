@@ -49,7 +49,7 @@ jobs:
              let result = "";
              responce.data.commits
              .forEach(commit => {
-             result += `${commit.sha} ${commit.commit.author.name} ${commit.commit.message}\n`
+             result += `${commit.sha} ${commit.commit.author.name} ${commit.commit.message} `
              })
              return result;
              }
@@ -75,7 +75,7 @@ jobs:
             -H "Content-type: application/json" \
             -H "Authorization: OAuth ${{secrets.TOKEN }}" \
             -H "X-Org-ID: ${{ secrets.ORGANISATION_ID }}" \
-            -d '{"summary": "Релиз № ${{ github.ref_name }} от ${{ steps.date.outputs.date }}", "description" : "Ответственный за релиз ${{ github.actor }}\n Коммиты, попавшие в релиз: ${{ steps.commits.outputs.result}}"}'
+            -d '{"summary": "Релиз № ${{ github.ref_name }} от ${{ steps.date.outputs.date }}", "description" : "Ответственный за релиз ${{ github.actor }}\nКоммиты, попавшие в релиз: ${{ steps.commits.outputs.result}}"}'
       - name: Tracker comment
         run: |
             curl -X POST https://api.tracker.yandex.net/v2/issues/INFRA-58/comments \
