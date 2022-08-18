@@ -42,7 +42,7 @@ jobs:
              -H "Accept: application/vnd.github+json"  
              -H "Authorization: token ${{ secrets.GIT_API }}")"
       - name: List commits
-        run: echo "${{ steps.commits.outputs.data }}"
+        run: echo ${{ steps.commits.outputs.data }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
