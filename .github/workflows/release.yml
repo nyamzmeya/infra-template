@@ -38,22 +38,25 @@ jobs:
           script: |
              const core = require('@actions/core');
              const axios = require('axios');
-             let prev_tag = await axios.get("https://api.github.com/repos/nyamzmeya/infra-template/releases/latest", { headers: { "Authorization": "token ${{ secrets.GIT_API }}" } })
-             let responce;
              const getCommits = async () => {
-              if (!prev_tag.data.tag_name) {
-                responce = await axios.get("https://api.github.com/repos/nyamzmeya/infra-template/commits", { headers: { "Authorization": "token ${{ secrets.GIT_API }}" } })
-              } else {
-                responce = await axios.get(`https://api.github.com/repos/nyamzmeya/infra-template/compare/${prev_tag.data.tag_name}...${{ github.ref_name }}`,
-             { headers: { "Authorization": "token ${{ secrets.GIT_API }}" } });
-             }
-             let result = "";
-             responce.data.commits
-             .forEach(commit => {
-             result += `${commit.sha} ${commit.commit.author.name} ${commit.commit.message} `
-             })
-             return result;
-             }
+             let prev_tag = null;
+             try {
+              prev_tag = await axios.get("https://api.github.com/repos/nyamzmeya/infra-template/releases/latest", { headers: {"Authorization": "token ${{ secrets.GIT_API }}" } });
+              } catch (error) {}
+              let responce;
+              if (!prev_tag) {
+                responce = await axios.get(https://api.github.com/repos/nyamzmeya/infra-template/commits",{ headers: {"Authorization": "token ${{ secrets.GIT_API }}" } });
+                responce = responce.data;
+                } else {
+                  responce = await axios.get(`https://api.github.com/repos/nyamzmeya/infra-template/compare/${prev_tag.data.tag_name}...${{ github.ref_name }}`,{ headers: {"Authorization": "token ${{ secrets.GIT_API }}" } });
+                  responce = responce.data.commits;
+                  }
+              let result = "";
+              responce.forEach((commit) => {
+                result += `${commit.sha} ${commit.commit.author.name} ${commit.commit.message} `;
+                });
+                return result || "-";
+                };
              getCommits().then(result => core.setOutput('result', result);
       - name: Login to Docker Hub
         uses: docker/login-action@v1
