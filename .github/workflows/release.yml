@@ -45,7 +45,7 @@ jobs:
               } catch (error) {}
               let responce;
               if (!prev_tag) {
-                responce = await axios.get(https://api.github.com/repos/nyamzmeya/infra-template/commits",{ headers: {"Authorization": "token ${{ secrets.GIT_API }}" } });
+                responce = await axios.get("https://api.github.com/repos/nyamzmeya/infra-template/commits",{ headers: {"Authorization": "token ${{ secrets.GIT_API }}" } });
                 responce = responce.data;
                 } else {
                   responce = await axios.get(`https://api.github.com/repos/nyamzmeya/infra-template/compare/${prev_tag.data.tag_name}...${{ github.ref_name }}`,{ headers: {"Authorization": "token ${{ secrets.GIT_API }}" } });
