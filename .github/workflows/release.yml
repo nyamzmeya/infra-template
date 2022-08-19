@@ -43,9 +43,14 @@ jobs:
           script: |
              const core = require('@actions/core');
              const axios = require('axios');
+             let responce;
              const getCommits = async () => {
-             let responce = await axios.get("https://api.github.com/repos/nyamzmeya/infra-template/compare/${{steps.release.outputs.tag_name}}...${{ github.ref_name }}",
+              if (!${{steps.release.outputs.tag_name}}) {
+                responce = await axios.get("https://api.github.com/repos/nyamzmeya/infra-template/commits", { headers: { "Authorization": "token ${{ secrets.GIT_API }}" } })
+              } else {
+                responce = await axios.get("https://api.github.com/repos/nyamzmeya/infra-template/compare/${{steps.release.outputs.tag_name}}...${{ github.ref_name }}",
              { headers: { "Authorization": "token ${{ secrets.GIT_API }}" } });
+             }
              let result = "";
              responce.data.commits
              .forEach(commit => {
