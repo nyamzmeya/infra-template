@@ -42,6 +42,7 @@ jobs:
           required-packages: axios
           script: |
              const core = require('@actions/core');
+             
              const axios = require('axios');
              let responce;
              const getCommits = async () => {
