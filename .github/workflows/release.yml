@@ -30,11 +30,6 @@ jobs:
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-      - name: Get release
-        id: release
-        uses: InsonusK/get-latest-release@v1.0.1
-        with:
-           myToken: ${{ github.token }}
       - name: Get commits
         id: commits
         uses: satackey/action-js-inline@v0.0.2
@@ -42,14 +37,14 @@ jobs:
           required-packages: axios
           script: |
              const core = require('@actions/core');
-
              const axios = require('axios');
+             let prev_tag = await axios.get("https://api.github.com/repos/nyamzmeya/infra-template/releases/latest", { headers: { "Authorization": "token ${{ secrets.GIT_API }}" } })
              let responce;
              const getCommits = async () => {
-              if (!${{steps.release.outputs.tag_name}}) {
+              if (!prev_tag.data.tag_name) {
                 responce = await axios.get("https://api.github.com/repos/nyamzmeya/infra-template/commits", { headers: { "Authorization": "token ${{ secrets.GIT_API }}" } })
               } else {
-                responce = await axios.get("https://api.github.com/repos/nyamzmeya/infra-template/compare/${{steps.release.outputs.tag_name}}...${{ github.ref_name }}",
+                responce = await axios.get(`https://api.github.com/repos/nyamzmeya/infra-template/compare/${prev_tag.data.tag_name}...${{ github.ref_name }}`,
              { headers: { "Authorization": "token ${{ secrets.GIT_API }}" } });
              }
              let result = "";
